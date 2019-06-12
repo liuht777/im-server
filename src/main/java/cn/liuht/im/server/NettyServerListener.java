@@ -1,5 +1,6 @@
 package cn.liuht.im.server;
 
+import cn.liuht.im.server.handler.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -70,7 +71,7 @@ public class NettyServerListener {
             @Override
             protected void initChannel(SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast(new ServerChannelHandlerAdapter());
+                pipeline.addLast(new ServerHandler());
             }
         });
         log.info("netty服务器在[{}]端口启动监听", port);
