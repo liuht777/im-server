@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: im-server
+im:
+  port: 8084
