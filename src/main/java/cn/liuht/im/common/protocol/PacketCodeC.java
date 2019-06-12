@@ -1,7 +1,9 @@
 package cn.liuht.im.common.protocol;
 
 import cn.liuht.im.common.protocol.request.LoginRequestPacket;
+import cn.liuht.im.common.protocol.request.MessageRequestPacket;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;
+import cn.liuht.im.common.protocol.response.MessageResponsePacket;
 import cn.liuht.im.common.serialize.Serializer;
 import cn.liuht.im.common.serialize.impl.JsonSerializer;
 import io.netty.buffer.ByteBuf;
@@ -12,6 +14,8 @@ import java.util.Map;
 
 import static cn.liuht.im.common.protocol.command.Command.LOGIN_REQUEST;
 import static cn.liuht.im.common.protocol.command.Command.LOGIN_RESPONSE;
+import static cn.liuht.im.common.protocol.command.Command.MESSAGE_REQUEST;
+import static cn.liuht.im.common.protocol.command.Command.MESSAGE_RESPONSE;
 
 /**
  * 数据包编解码
@@ -33,6 +37,8 @@ public class PacketCodeC {
         PACKET_TYPE_MAP = new HashMap<>();
         PACKET_TYPE_MAP.put(LOGIN_REQUEST, LoginRequestPacket.class);
         PACKET_TYPE_MAP.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        PACKET_TYPE_MAP.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        PACKET_TYPE_MAP.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         SERIALIZER_MAP = new HashMap<>();
         Serializer serializer = new JsonSerializer();

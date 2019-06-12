@@ -4,6 +4,8 @@ import cn.liuht.im.common.protocol.Packet;
 import cn.liuht.im.common.protocol.PacketCodeC;
 import cn.liuht.im.common.protocol.request.LoginRequestPacket;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;
+import cn.liuht.im.common.protocol.response.MessageResponsePacket;
+import cn.liuht.im.common.util.LoginUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -45,10 +47,14 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         if (packet instanceof LoginResponsePacket) {
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
             if (loginResponsePacket.isSuccess()) {
+                LoginUtil.markAsLogin(ctx.channel());
                 log.info(new Date() + ": 客户端登录成功");
             } else {
                 log.info(new Date() + ": 客户端登录失败，原因：" + loginResponsePacket.getReason());
             }
+        } else if (packet instanceof MessageResponsePacket) {
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket) packet;
+            log.info(new Date() + ": 收到服务端的消息: " + messageResponsePacket.getMessage());
         }
     }
 }
