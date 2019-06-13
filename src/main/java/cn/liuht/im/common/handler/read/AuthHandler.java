@@ -19,7 +19,6 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (!LoginUtil.hasLogin(ctx.channel())) {
-            log.error(new Date() + ": 无登录验证，强制关闭连接!");
             ctx.channel().close();
         } else {
             // 登录认证校验通过过后, 删除这个handler
