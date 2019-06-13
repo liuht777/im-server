@@ -1,6 +1,7 @@
 package cn.liuht.im.common.protocol.request;
 
 import cn.liuht.im.common.protocol.Packet;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +15,7 @@ import static cn.liuht.im.common.protocol.command.Command.GROUP_MESSAGE_REQUEST;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@AllArgsConstructor
 public class GroupMessageRequestPacket extends Packet {
 
     private String toGroupId;

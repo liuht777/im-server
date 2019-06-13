@@ -1,4 +1,4 @@
-package cn.liuht.im.client.command;
+package cn.liuht.im.client.console;
 
 import io.netty.channel.Channel;
 

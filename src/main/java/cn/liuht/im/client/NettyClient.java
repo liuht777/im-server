@@ -1,7 +1,7 @@
 package cn.liuht.im.client;
 
-import cn.liuht.im.client.command.ConsoleCommandManager;
-import cn.liuht.im.client.command.LoginConsoleCommand;
+import cn.liuht.im.client.console.ConsoleCommandManager;
+import cn.liuht.im.client.console.LoginConsoleCommand;
 import cn.liuht.im.common.handler.codec.Spliter;
 import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;

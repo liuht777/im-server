@@ -1,4 +1,4 @@
-package cn.liuht.im.client.command;
+package cn.liuht.im.client.console;
 
 import cn.liuht.im.common.protocol.request.JoinGroupRequestPacket;
 import io.netty.channel.Channel;

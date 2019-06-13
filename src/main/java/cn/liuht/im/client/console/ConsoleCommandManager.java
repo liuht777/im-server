@@ -1,4 +1,4 @@
-package cn.liuht.im.client.command;
+package cn.liuht.im.client.console;
 
 import cn.liuht.im.common.util.SessionUtil;
 import io.netty.channel.Channel;
@@ -27,6 +27,7 @@ public class ConsoleCommandManager implements ConsoleCommand {
         consoleCommandMap.put("joinGroup", new JoinGroupConsoleCommand());
         consoleCommandMap.put("quitGroup", new QuitGroupConsoleCommand());
         consoleCommandMap.put("listGroupMembers", new ListGroupMembersConsoleCommand());
+        consoleCommandMap.put("sendToGroup", new SendToGroupConsoleCommand());
     }
 
     @Override

@@ -42,7 +42,7 @@ public class ImHandler extends SimpleChannelInboundHandler<Packet> {
     }
 
     @Override
-    protected void channelRead0(final ChannelHandlerContext ctx, final Packet msg) throws Exception {
-
+    protected void channelRead0(final ChannelHandlerContext ctx, final Packet packet) throws Exception {
+        handlerMap.get(packet.getCommand()).channelRead(ctx, packet);
     }
 }
