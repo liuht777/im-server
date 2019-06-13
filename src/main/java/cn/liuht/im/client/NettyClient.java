@@ -6,9 +6,12 @@ import cn.liuht.im.common.handler.Spliter;
 import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
 import cn.liuht.im.common.handler.write.CreateGroupResponseHandler;
+import cn.liuht.im.common.handler.write.JoinGroupResponseHandler;
+import cn.liuht.im.common.handler.write.ListGroupMembersResponseHandler;
 import cn.liuht.im.common.handler.write.LoginResponseHandler;
 import cn.liuht.im.common.handler.write.LogoutResponseHandler;
 import cn.liuht.im.common.handler.write.MessageResponseHandler;
+import cn.liuht.im.common.handler.write.QuitGroupResponseHandler;
 import cn.liuht.im.common.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -72,14 +75,24 @@ public class NettyClient {
         bootstrap.option(ChannelOption.TCP_NODELAY, true);
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(SocketChannel socketChannel) {
-                socketChannel.pipeline().addLast(new Spliter());
-                socketChannel.pipeline().addLast(new PacketDecoder());
-                socketChannel.pipeline().addLast(new LoginResponseHandler());
-                socketChannel.pipeline().addLast(new LogoutResponseHandler());
-                socketChannel.pipeline().addLast(new MessageResponseHandler());
-                socketChannel.pipeline().addLast(new CreateGroupResponseHandler());
-                socketChannel.pipeline().addLast(new PacketEncoder());
+            protected void initChannel(SocketChannel ch) {
+                ch.pipeline().addLast(new Spliter());
+                ch.pipeline().addLast(new PacketDecoder());
+                // 登录响应处理器
+                ch.pipeline().addLast(new LoginResponseHandler());
+                // 收消息处理器
+                ch.pipeline().addLast(new MessageResponseHandler());
+                // 创建群响应处理器
+                ch.pipeline().addLast(new CreateGroupResponseHandler());
+                // 加群响应处理器
+                ch.pipeline().addLast(new JoinGroupResponseHandler());
+                // 退群响应处理器
+                ch.pipeline().addLast(new QuitGroupResponseHandler());
+                // 获取群成员响应处理器
+                ch.pipeline().addLast(new ListGroupMembersResponseHandler());
+                // 登出响应处理器
+                ch.pipeline().addLast(new LogoutResponseHandler());
+                ch.pipeline().addLast(new PacketEncoder());
             }
         });
     }

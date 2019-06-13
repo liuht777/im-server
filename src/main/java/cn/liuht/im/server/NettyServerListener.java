@@ -5,9 +5,12 @@ import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
 import cn.liuht.im.common.handler.read.AuthHandler;
 import cn.liuht.im.common.handler.read.CreateGroupRequestHandler;
+import cn.liuht.im.common.handler.read.JoinGroupRequestHandler;
+import cn.liuht.im.common.handler.read.ListGroupMembersRequestHandler;
 import cn.liuht.im.common.handler.read.LoginRequestHandler;
 import cn.liuht.im.common.handler.read.LogoutRequestHandler;
 import cn.liuht.im.common.handler.read.MessageRequestHandler;
+import cn.liuht.im.common.handler.read.QuitGroupRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -81,11 +84,21 @@ public class NettyServerListener {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast(new Spliter());
                 pipeline.addLast(new PacketDecoder());
+                // 登录请求处理器
                 pipeline.addLast(new LoginRequestHandler());
                 pipeline.addLast(new AuthHandler());
+                // 单聊消息请求处理器
                 pipeline.addLast(new MessageRequestHandler());
+                // 创建群聊处理器
                 pipeline.addLast(new CreateGroupRequestHandler());
-                pipeline.addLast(new LogoutRequestHandler());
+                // 加群请求处理器
+                pipeline.addLast(new JoinGroupRequestHandler());
+                // 退群请求处理器
+                pipeline.addLast(new QuitGroupRequestHandler());
+                // 获取群成员请求处理器
+                pipeline.addLast(new ListGroupMembersRequestHandler());
+                // 登出请求处理器
+                ch.pipeline().addLast(new LogoutRequestHandler());
                 pipeline.addLast(new PacketEncoder());
             }
         });
