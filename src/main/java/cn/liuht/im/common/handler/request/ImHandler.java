@@ -1,6 +1,5 @@
-package cn.liuht.im.server;
+package cn.liuht.im.common.handler.request;
 
-import cn.liuht.im.common.handler.request.*;
 import cn.liuht.im.common.protocol.Packet;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;

@@ -3,6 +3,7 @@ package cn.liuht.im.server;
 import cn.liuht.im.common.handler.codec.PacketCodecHandler;
 import cn.liuht.im.common.handler.codec.Spliter;
 import cn.liuht.im.common.handler.request.AuthHandler;
+import cn.liuht.im.common.handler.request.ImHandler;
 import cn.liuht.im.common.handler.request.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
