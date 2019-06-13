@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.read;
+package cn.liuht.im.common.handler.request;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

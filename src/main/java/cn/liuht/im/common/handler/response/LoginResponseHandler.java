@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.write;
+package cn.liuht.im.common.handler.response;
 
 import cn.liuht.im.common.model.Session;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;

@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.write;
+package cn.liuht.im.common.handler.response;
 
 import cn.liuht.im.common.protocol.response.QuitGroupResponsePacket;
 import io.netty.channel.ChannelHandlerContext;

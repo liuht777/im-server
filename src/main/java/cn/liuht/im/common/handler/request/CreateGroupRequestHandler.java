@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.read;
+package cn.liuht.im.common.handler.request;
 
 import cn.liuht.im.common.protocol.request.CreateGroupRequestPacket;
 import cn.liuht.im.common.protocol.response.CreateGroupResponsePacket;
