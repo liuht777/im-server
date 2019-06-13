@@ -5,8 +5,9 @@ import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
 import cn.liuht.im.common.handler.write.LoginResponseHandler;
 import cn.liuht.im.common.handler.write.MessageResponseHandler;
+import cn.liuht.im.common.protocol.request.LoginRequestPacket;
 import cn.liuht.im.common.protocol.request.MessageRequestPacket;
-import cn.liuht.im.common.util.LoginUtil;
+import cn.liuht.im.common.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -110,22 +111,32 @@ public class NettyClient {
      * @param channel
      */
     private void startConsoleThread(Channel channel) {
+        Scanner sc = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
         executorService.execute(() -> {
             while (!Thread.interrupted()) {
-                if (LoginUtil.hasLogin(channel)) {
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine();
-                    log.info(new Date() + ": 输入消息发送至服务端:{}", line);
-
-                    MessageRequestPacket packet = new MessageRequestPacket();
-                    packet.setMessage(line);
-                    channel.writeAndFlush(packet);
+                if (!SessionUtil.hasLogin(channel)) {
+                    log.info("输入用户名登录: ");
+                    String username = sc.nextLine();
+                    loginRequestPacket.setUserName(username);
+                    // 密码使用默认的
+                    loginRequestPacket.setPassword("pwd");
+                    // 发送登录数据包
+                    channel.writeAndFlush(loginRequestPacket);
+                    waitForLoginResponse();
+                } else {
+                    String toUserId = sc.next();
+                    String message = sc.next();
+                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
                 }
             }
         });
     }
 
-    public static void main(String[] args) {
-        new NettyClient("127.0.0.1", 8084);
+    private static void waitForLoginResponse() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
+        }
     }
 }

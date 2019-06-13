@@ -1,13 +1,15 @@
 package cn.liuht.im.common.handler.read;
 
+import cn.liuht.im.common.model.Session;
 import cn.liuht.im.common.protocol.request.LoginRequestPacket;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;
-import cn.liuht.im.common.util.LoginUtil;
+import cn.liuht.im.common.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * LoginRequestPacket
@@ -20,19 +22,23 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final LoginRequestPacket loginRequestPacket) throws Exception {
         log.info(new Date() + ": 收到登录请求");
+
         LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
         loginResponsePacket.setVersion(loginRequestPacket.getVersion());
-        // 登录校验
+        loginResponsePacket.setUserName(loginRequestPacket.getUserName());
+
         if (valid(loginRequestPacket)) {
-            log.info(new Date() + ": 登录成功");
             loginResponsePacket.setSuccess(true);
-            // 标记当前的 channel 的状态为已登录
-            LoginUtil.markAsLogin(ctx.channel());
+            String userId = randomUserId();
+            loginResponsePacket.setUserId(userId);
+            log.info("[" + loginRequestPacket.getUserName() + "]登录成功");
+            SessionUtil.bindSession(new Session(userId, loginRequestPacket.getUserName()), ctx.channel());
         } else {
-            log.error(new Date() + ": 登录失败");
-            loginResponsePacket.setReason("账号或者密码错误");
+            loginResponsePacket.setReason("账号密码校验失败");
             loginResponsePacket.setSuccess(false);
+            log.error(new Date() + ": 登录失败");
         }
+
         // 登录响应
         ctx.channel().writeAndFlush(loginResponsePacket);
     }
@@ -45,5 +51,16 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
      */
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
+    }
+
+    private static String randomUserId() {
+        return UUID.randomUUID().toString().split("-")[0];
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        Session session = SessionUtil.getSession(ctx.channel());
+        log.warn("[" + session.getUserName() + "]下线, 清空缓存");
+        SessionUtil.unBindSession(ctx.channel());
     }
 }

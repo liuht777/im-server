@@ -4,7 +4,6 @@ import cn.liuht.im.common.handler.Spliter;
 import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
 import cn.liuht.im.common.handler.read.AuthHandler;
-import cn.liuht.im.common.handler.read.LifeCyCleTestHandler;
 import cn.liuht.im.common.handler.read.LoginRequestHandler;
 import cn.liuht.im.common.handler.read.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -78,7 +77,6 @@ public class NettyServerListener {
             protected void initChannel(SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast(new Spliter());
-                pipeline.addLast(new LifeCyCleTestHandler());
                 pipeline.addLast(new PacketDecoder());
                 pipeline.addLast(new LoginRequestHandler());
                 pipeline.addLast(new AuthHandler());

@@ -1,5 +1,6 @@
 package cn.liuht.im.common.attribute;
 
+import cn.liuht.im.common.model.Session;
 import io.netty.util.AttributeKey;
 
 /**
@@ -11,7 +12,7 @@ import io.netty.util.AttributeKey;
 public interface Attributes {
 
     /**
-     * 登录标识
+     * 回话标识
      */
-    AttributeKey<Boolean> LOGIN = AttributeKey.newInstance("login");
+    AttributeKey<Session> SESSION = AttributeKey.newInstance("session");
 }

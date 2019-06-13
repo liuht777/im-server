@@ -16,6 +16,19 @@ import static cn.liuht.im.common.protocol.command.Command.MESSAGE_RESPONSE;
 @Data
 public class MessageResponsePacket extends Packet {
 
+    /**
+     * 消息是谁发来的
+     */
+    private String fromUserId;
+
+    /**
+     * 消息是谁发来的
+     */
+    private String fromUserName;
+
+    /**
+     * 内容
+     */
     private String message;
 
     @Override

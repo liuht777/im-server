@@ -5,8 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
-
 /**
  * MessageResponsePacket handler
  *
@@ -17,6 +15,8 @@ import java.util.Date;
 public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponsePacket> {
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final MessageResponsePacket msg) throws Exception {
-        log.info(new Date() + ": 收到服务端的消息: " + msg.getMessage());
+        String fromUserId = msg.getFromUserId();
+        String fromUserName = msg.getFromUserName();
+        log.info(fromUserId + ":" + fromUserName + " -> " + msg.getMessage());
     }
 }
