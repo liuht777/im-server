@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.request;
+package cn.liuht.im.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;

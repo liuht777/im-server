@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.request;
+package cn.liuht.im.server.handler;
 
 import cn.liuht.im.common.model.Session;
 import cn.liuht.im.common.protocol.request.LogoutRequestPacket;

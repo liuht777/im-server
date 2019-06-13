@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.codec;
+package cn.liuht.im.common.codec;
 
 import cn.liuht.im.common.protocol.Packet;
 import cn.liuht.im.common.protocol.PacketCodeC;

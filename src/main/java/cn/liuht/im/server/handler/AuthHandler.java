@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler.request;
+package cn.liuht.im.server.handler;
 
 import cn.liuht.im.common.util.SessionUtil;
 import io.netty.channel.ChannelHandler;
