@@ -3,6 +3,7 @@ package cn.liuht.im.common.handler.request;
 import cn.liuht.im.common.protocol.request.JoinGroupRequestPacket;
 import cn.liuht.im.common.protocol.response.JoinGroupResponsePacket;
 import cn.liuht.im.common.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -13,7 +14,13 @@ import io.netty.channel.group.ChannelGroup;
  * @author liuht
  * 2019/6/13 16:00
  */
+@ChannelHandler.Sharable
 public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGroupRequestPacket> {
+
+    public static final JoinGroupRequestHandler INSTANCE = new JoinGroupRequestHandler();
+
+    private JoinGroupRequestHandler() {}
+
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final JoinGroupRequestPacket requestPacket) throws Exception {
         // 1. 获取群对应的 channelGroup，然后将当前用户的 channel 添加进去

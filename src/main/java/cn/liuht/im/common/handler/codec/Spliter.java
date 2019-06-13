@@ -1,4 +1,4 @@
-package cn.liuht.im.common.handler;
+package cn.liuht.im.common.handler.codec;
 
 import cn.liuht.im.common.protocol.PacketCodeC;
 import io.netty.buffer.ByteBuf;

@@ -5,6 +5,7 @@ import cn.liuht.im.common.protocol.request.MessageRequestPacket;
 import cn.liuht.im.common.protocol.response.MessageResponsePacket;
 import cn.liuht.im.common.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,15 @@ import lombok.extern.slf4j.Slf4j;
  * 2019/6/13 9:39
  */
 @Slf4j
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
+
+    private MessageRequestHandler() {
+
+    }
+
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final MessageRequestPacket messageRequestPacket) throws Exception {
         // 1.拿到消息发送方的会话信息

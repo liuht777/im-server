@@ -5,6 +5,7 @@ import cn.liuht.im.common.protocol.request.ListGroupMembersRequestPacket;
 import cn.liuht.im.common.protocol.response.ListGroupMembersResponsePacket;
 import cn.liuht.im.common.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -18,7 +19,13 @@ import java.util.List;
  * @author liuht
  * 2019/6/13 16:03
  */
+@ChannelHandler.Sharable
 public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
+
+    public static final ListGroupMembersRequestHandler INSTANCE = new ListGroupMembersRequestHandler();
+
+    private ListGroupMembersRequestHandler() {}
+
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final ListGroupMembersRequestPacket requestPacket) throws Exception {
         // 1. 获取群的 ChannelGroup

@@ -1,16 +1,9 @@
 package cn.liuht.im.server;
 
-import cn.liuht.im.common.handler.Spliter;
-import cn.liuht.im.common.handler.codec.PacketDecoder;
-import cn.liuht.im.common.handler.codec.PacketEncoder;
+import cn.liuht.im.common.handler.codec.PacketCodecHandler;
+import cn.liuht.im.common.handler.codec.Spliter;
 import cn.liuht.im.common.handler.request.AuthHandler;
-import cn.liuht.im.common.handler.request.CreateGroupRequestHandler;
-import cn.liuht.im.common.handler.request.JoinGroupRequestHandler;
-import cn.liuht.im.common.handler.request.ListGroupMembersRequestHandler;
 import cn.liuht.im.common.handler.request.LoginRequestHandler;
-import cn.liuht.im.common.handler.request.LogoutRequestHandler;
-import cn.liuht.im.common.handler.request.MessageRequestHandler;
-import cn.liuht.im.common.handler.request.QuitGroupRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -83,23 +76,10 @@ public class NettyServerListener {
             protected void initChannel(SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast(new Spliter());
-                pipeline.addLast(new PacketDecoder());
-                // 登录请求处理器
-                pipeline.addLast(new LoginRequestHandler());
-                pipeline.addLast(new AuthHandler());
-                // 单聊消息请求处理器
-                pipeline.addLast(new MessageRequestHandler());
-                // 创建群聊处理器
-                pipeline.addLast(new CreateGroupRequestHandler());
-                // 加群请求处理器
-                pipeline.addLast(new JoinGroupRequestHandler());
-                // 退群请求处理器
-                pipeline.addLast(new QuitGroupRequestHandler());
-                // 获取群成员请求处理器
-                pipeline.addLast(new ListGroupMembersRequestHandler());
-                // 登出请求处理器
-                ch.pipeline().addLast(new LogoutRequestHandler());
-                pipeline.addLast(new PacketEncoder());
+                pipeline.addLast(PacketCodecHandler.INSTANCE);
+                pipeline.addLast(LoginRequestHandler.INSTANCE);
+                pipeline.addLast(AuthHandler.INSTANCE);
+                pipeline.addLast(ImHandler.INSTANCE);
             }
         });
         serverBootstrap.bind(port).addListener(future -> {

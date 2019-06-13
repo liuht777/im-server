@@ -5,6 +5,7 @@ import cn.liuht.im.common.protocol.response.CreateGroupResponsePacket;
 import cn.liuht.im.common.util.IDUtil;
 import cn.liuht.im.common.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -21,7 +22,13 @@ import java.util.List;
  * 2019/6/13 15:16
  */
 @Slf4j
+@ChannelHandler.Sharable
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
+
+    public static final CreateGroupRequestHandler INSTANCE = new CreateGroupRequestHandler();
+
+    private CreateGroupRequestHandler() {}
+
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final CreateGroupRequestPacket createGroupRequestPacket) throws Exception {
         List<String> userIdList = createGroupRequestPacket.getUserIdList();

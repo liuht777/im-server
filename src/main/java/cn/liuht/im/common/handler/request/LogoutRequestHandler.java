@@ -4,6 +4,7 @@ import cn.liuht.im.common.model.Session;
 import cn.liuht.im.common.protocol.request.LogoutRequestPacket;
 import cn.liuht.im.common.protocol.response.LogoutResponsePacket;
 import cn.liuht.im.common.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,13 @@ import lombok.extern.slf4j.Slf4j;
  * 2019/6/13 15:25
  */
 @Slf4j
+@ChannelHandler.Sharable
 public class LogoutRequestHandler extends SimpleChannelInboundHandler<LogoutRequestPacket> {
+
+    public static final LogoutRequestHandler INSTANCE = new LogoutRequestHandler();
+
+    private LogoutRequestHandler() {}
+
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final LogoutRequestPacket msg) throws Exception {
         final Session session = SessionUtil.getSession(ctx.channel());

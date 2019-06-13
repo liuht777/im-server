@@ -2,10 +2,11 @@ package cn.liuht.im.client;
 
 import cn.liuht.im.client.command.ConsoleCommandManager;
 import cn.liuht.im.client.command.LoginConsoleCommand;
-import cn.liuht.im.common.handler.Spliter;
+import cn.liuht.im.common.handler.codec.Spliter;
 import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
 import cn.liuht.im.common.handler.response.CreateGroupResponseHandler;
+import cn.liuht.im.common.handler.response.GroupMessageResponseHandler;
 import cn.liuht.im.common.handler.response.JoinGroupResponseHandler;
 import cn.liuht.im.common.handler.response.ListGroupMembersResponseHandler;
 import cn.liuht.im.common.handler.response.LoginResponseHandler;
@@ -90,6 +91,8 @@ public class NettyClient {
                 ch.pipeline().addLast(new QuitGroupResponseHandler());
                 // 获取群成员响应处理器
                 ch.pipeline().addLast(new ListGroupMembersResponseHandler());
+                // 群消息响应
+                ch.pipeline().addLast(new GroupMessageResponseHandler());
                 // 登出响应处理器
                 ch.pipeline().addLast(new LogoutResponseHandler());
                 ch.pipeline().addLast(new PacketEncoder());

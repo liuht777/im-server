@@ -5,6 +5,7 @@ import cn.liuht.im.common.protocol.request.LoginRequestPacket;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;
 import cn.liuht.im.common.util.IDUtil;
 import cn.liuht.im.common.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,13 @@ import java.util.Date;
  * 2019/6/13 9:37
  */
 @Slf4j
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    public static final LoginRequestHandler INSTANCE = new LoginRequestHandler();
+
+    private LoginRequestHandler() {}
+
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final LoginRequestPacket loginRequestPacket) throws Exception {
         log.info(new Date() + ": 收到登录请求");
