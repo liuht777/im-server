@@ -7,7 +7,6 @@ import cn.liuht.im.common.protocol.response.MessageResponsePacket;
 import cn.liuht.im.common.serialize.Serializer;
 import cn.liuht.im.common.serialize.impl.JsonSerializer;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class PacketCodeC {
     /**
      * 数据包头部公用的莫法数据 4字节
      */
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
     private static final Map<Byte, Class<? extends Packet>> PACKET_TYPE_MAP;
     private static final Map<Byte, Serializer> SERIALIZER_MAP;
     public static final PacketCodeC INSTANCE = new PacketCodeC();
@@ -48,13 +47,10 @@ public class PacketCodeC {
     /**
      * 编码
      *
-     * @param byteBufAllocator
+     * @param byteBuf
      * @param packet
-     * @return
      */
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
-        // 1. 创建 ByteBuf 对象
-        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
+    public void encode(ByteBuf byteBuf, Packet packet) {
         // 2. 序列化 Java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
@@ -65,8 +61,6 @@ public class PacketCodeC {
         byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
-
-        return byteBuf;
     }
 
     /**

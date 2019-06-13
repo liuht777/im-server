@@ -1,11 +1,13 @@
 package cn.liuht.im.client;
 
-import cn.liuht.im.client.handler.ClientHandler;
-import cn.liuht.im.common.protocol.PacketCodeC;
+import cn.liuht.im.common.handler.Spliter;
+import cn.liuht.im.common.handler.codec.PacketDecoder;
+import cn.liuht.im.common.handler.codec.PacketEncoder;
+import cn.liuht.im.common.handler.write.LoginResponseHandler;
+import cn.liuht.im.common.handler.write.MessageResponseHandler;
 import cn.liuht.im.common.protocol.request.MessageRequestPacket;
 import cn.liuht.im.common.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -68,7 +70,11 @@ public class NettyClient {
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) {
-                socketChannel.pipeline().addLast(new ClientHandler());
+                socketChannel.pipeline().addLast(new Spliter());
+                socketChannel.pipeline().addLast(new PacketDecoder());
+                socketChannel.pipeline().addLast(new LoginResponseHandler());
+                socketChannel.pipeline().addLast(new MessageResponseHandler());
+                socketChannel.pipeline().addLast(new PacketEncoder());
             }
         });
     }
@@ -113,8 +119,7 @@ public class NettyClient {
 
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
-                    ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(channel.alloc(), packet);
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(packet);
                 }
             }
         });

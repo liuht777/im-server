@@ -1,6 +1,10 @@
 package cn.liuht.im.server;
 
-import cn.liuht.im.server.handler.ServerHandler;
+import cn.liuht.im.common.handler.Spliter;
+import cn.liuht.im.common.handler.codec.PacketDecoder;
+import cn.liuht.im.common.handler.codec.PacketEncoder;
+import cn.liuht.im.common.handler.read.LoginRequestHandler;
+import cn.liuht.im.common.handler.read.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -71,7 +75,11 @@ public class NettyServerListener {
             @Override
             protected void initChannel(SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
-                pipeline.addLast(new ServerHandler());
+                pipeline.addLast(new Spliter());
+                pipeline.addLast(new PacketDecoder());
+                pipeline.addLast(new LoginRequestHandler());
+                pipeline.addLast(new MessageRequestHandler());
+                pipeline.addLast(new PacketEncoder());
             }
         });
         log.info("netty服务器在[{}]端口启动监听", port);
