@@ -4,7 +4,9 @@ import cn.liuht.im.common.handler.Spliter;
 import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
 import cn.liuht.im.common.handler.read.AuthHandler;
+import cn.liuht.im.common.handler.read.CreateGroupRequestHandler;
 import cn.liuht.im.common.handler.read.LoginRequestHandler;
+import cn.liuht.im.common.handler.read.LogoutRequestHandler;
 import cn.liuht.im.common.handler.read.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
+import java.util.Date;
 
 /**
  * Netty Server 监听
@@ -81,10 +84,17 @@ public class NettyServerListener {
                 pipeline.addLast(new LoginRequestHandler());
                 pipeline.addLast(new AuthHandler());
                 pipeline.addLast(new MessageRequestHandler());
+                pipeline.addLast(new CreateGroupRequestHandler());
+                pipeline.addLast(new LogoutRequestHandler());
                 pipeline.addLast(new PacketEncoder());
             }
         });
-        log.info("netty服务器在[{}]端口启动监听", port);
-        serverBootstrap.bind(port);
+        serverBootstrap.bind(port).addListener(future -> {
+            if (future.isSuccess()) {
+                log.info(new Date() + ": 端口[" + port + "]绑定成功!");
+            } else {
+                log.error("端口[" + port + "]绑定失败!");
+            }
+        });
     }
 }

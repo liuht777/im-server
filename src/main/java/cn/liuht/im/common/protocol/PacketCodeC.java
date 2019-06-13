@@ -1,8 +1,12 @@
 package cn.liuht.im.common.protocol;
 
+import cn.liuht.im.common.protocol.request.CreateGroupRequestPacket;
 import cn.liuht.im.common.protocol.request.LoginRequestPacket;
+import cn.liuht.im.common.protocol.request.LogoutRequestPacket;
 import cn.liuht.im.common.protocol.request.MessageRequestPacket;
+import cn.liuht.im.common.protocol.response.CreateGroupResponsePacket;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;
+import cn.liuht.im.common.protocol.response.LogoutResponsePacket;
 import cn.liuht.im.common.protocol.response.MessageResponsePacket;
 import cn.liuht.im.common.serialize.Serializer;
 import cn.liuht.im.common.serialize.impl.JsonSerializer;
@@ -11,8 +15,12 @@ import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
 
+import static cn.liuht.im.common.protocol.command.Command.CREATE_GROUP_REQUEST;
+import static cn.liuht.im.common.protocol.command.Command.CREATE_GROUP_RESPONSE;
 import static cn.liuht.im.common.protocol.command.Command.LOGIN_REQUEST;
 import static cn.liuht.im.common.protocol.command.Command.LOGIN_RESPONSE;
+import static cn.liuht.im.common.protocol.command.Command.LOGOUT_REQUEST;
+import static cn.liuht.im.common.protocol.command.Command.LOGOUT_RESPONSE;
 import static cn.liuht.im.common.protocol.command.Command.MESSAGE_REQUEST;
 import static cn.liuht.im.common.protocol.command.Command.MESSAGE_RESPONSE;
 
@@ -38,6 +46,10 @@ public class PacketCodeC {
         PACKET_TYPE_MAP.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         PACKET_TYPE_MAP.put(MESSAGE_REQUEST, MessageRequestPacket.class);
         PACKET_TYPE_MAP.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        PACKET_TYPE_MAP.put(LOGOUT_REQUEST, LogoutRequestPacket.class);
+        PACKET_TYPE_MAP.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        PACKET_TYPE_MAP.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        PACKET_TYPE_MAP.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
 
         SERIALIZER_MAP = new HashMap<>();
         Serializer serializer = new JsonSerializer();

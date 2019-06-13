@@ -3,13 +3,13 @@ package cn.liuht.im.common.handler.read;
 import cn.liuht.im.common.model.Session;
 import cn.liuht.im.common.protocol.request.LoginRequestPacket;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;
+import cn.liuht.im.common.util.IDUtil;
 import cn.liuht.im.common.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * LoginRequestPacket
@@ -29,7 +29,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
-            String userId = randomUserId();
+            String userId = IDUtil.randomId();
             loginResponsePacket.setUserId(userId);
             log.info("[" + loginRequestPacket.getUserName() + "]登录成功");
             SessionUtil.bindSession(new Session(userId, loginRequestPacket.getUserName()), ctx.channel());
@@ -51,10 +51,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
      */
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
-    }
-
-    private static String randomUserId() {
-        return UUID.randomUUID().toString().split("-")[0];
     }
 
     @Override
