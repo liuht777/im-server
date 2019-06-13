@@ -2,11 +2,13 @@ package cn.liuht.im.client;
 
 import cn.liuht.im.client.console.ConsoleCommandManager;
 import cn.liuht.im.client.console.LoginConsoleCommand;
-import cn.liuht.im.common.handler.codec.Spliter;
 import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
+import cn.liuht.im.common.handler.codec.Spliter;
+import cn.liuht.im.common.handler.request.ImIdleStateHandler;
 import cn.liuht.im.common.handler.response.CreateGroupResponseHandler;
 import cn.liuht.im.common.handler.response.GroupMessageResponseHandler;
+import cn.liuht.im.common.handler.response.HeartBeatTimerHandler;
 import cn.liuht.im.common.handler.response.JoinGroupResponseHandler;
 import cn.liuht.im.common.handler.response.ListGroupMembersResponseHandler;
 import cn.liuht.im.common.handler.response.LoginResponseHandler;
@@ -77,6 +79,9 @@ public class NettyClient {
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) {
+                // 空闲检测
+                ch.pipeline().addLast(new ImIdleStateHandler());
+                // 粘包/拆包 编码/解码
                 ch.pipeline().addLast(new Spliter());
                 ch.pipeline().addLast(new PacketDecoder());
                 // 登录响应处理器
@@ -96,6 +101,8 @@ public class NettyClient {
                 // 登出响应处理器
                 ch.pipeline().addLast(new LogoutResponseHandler());
                 ch.pipeline().addLast(new PacketEncoder());
+                // 心跳定时器
+                ch.pipeline().addLast(new HeartBeatTimerHandler());
             }
         });
     }

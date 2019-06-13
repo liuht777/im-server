@@ -3,7 +3,9 @@ package cn.liuht.im.server;
 import cn.liuht.im.common.handler.codec.PacketCodecHandler;
 import cn.liuht.im.common.handler.codec.Spliter;
 import cn.liuht.im.common.handler.request.AuthHandler;
+import cn.liuht.im.common.handler.request.HeartBeatRequestHandler;
 import cn.liuht.im.common.handler.request.ImHandler;
+import cn.liuht.im.common.handler.request.ImIdleStateHandler;
 import cn.liuht.im.common.handler.request.LoginRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -76,9 +78,12 @@ public class NettyServerListener {
             @Override
             protected void initChannel(SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
+                // 空闲检测
+                ch.pipeline().addLast(new ImIdleStateHandler());
                 pipeline.addLast(new Spliter());
                 pipeline.addLast(PacketCodecHandler.INSTANCE);
                 pipeline.addLast(LoginRequestHandler.INSTANCE);
+                pipeline.addLast(HeartBeatRequestHandler.INSTANCE);
                 pipeline.addLast(AuthHandler.INSTANCE);
                 pipeline.addLast(ImHandler.INSTANCE);
             }
