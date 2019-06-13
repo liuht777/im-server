@@ -3,6 +3,7 @@ package cn.liuht.im.server;
 import cn.liuht.im.common.handler.Spliter;
 import cn.liuht.im.common.handler.codec.PacketDecoder;
 import cn.liuht.im.common.handler.codec.PacketEncoder;
+import cn.liuht.im.common.handler.read.AuthHandler;
 import cn.liuht.im.common.handler.read.LifeCyCleTestHandler;
 import cn.liuht.im.common.handler.read.LoginRequestHandler;
 import cn.liuht.im.common.handler.read.MessageRequestHandler;
@@ -80,6 +81,7 @@ public class NettyServerListener {
                 pipeline.addLast(new LifeCyCleTestHandler());
                 pipeline.addLast(new PacketDecoder());
                 pipeline.addLast(new LoginRequestHandler());
+                pipeline.addLast(new AuthHandler());
                 pipeline.addLast(new MessageRequestHandler());
                 pipeline.addLast(new PacketEncoder());
             }

@@ -2,6 +2,7 @@ package cn.liuht.im.common.handler.read;
 
 import cn.liuht.im.common.protocol.request.LoginRequestPacket;
 import cn.liuht.im.common.protocol.response.LoginResponsePacket;
+import cn.liuht.im.common.util.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         if (valid(loginRequestPacket)) {
             log.info(new Date() + ": 登录成功");
             loginResponsePacket.setSuccess(true);
+            // 标记当前的 channel 的状态为已登录
+            LoginUtil.markAsLogin(ctx.channel());
         } else {
             log.error(new Date() + ": 登录失败");
             loginResponsePacket.setReason("账号或者密码错误");
