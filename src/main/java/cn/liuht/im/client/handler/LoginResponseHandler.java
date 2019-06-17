@@ -7,8 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
-
 /**
  * 登录响应handler
  *
@@ -30,10 +28,5 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         } else {
             log.error("[" + userName + "]登录失败，原因：" + responsePacket.getReason());
         }
-    }
-
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        log.info(new Date() + ": 客户端连接被关闭!");
     }
 }

@@ -71,15 +71,16 @@ public class NettyServerListener {
         int port = nettyConfig.getPort();
         serverBootstrap.group(boss, work)
                 .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_BACKLOG, 1024)
-                .handler(new LoggingHandler(LogLevel.INFO));
+                .option(ChannelOption.SO_BACKLOG, 1024);
         //设置事件处理
         serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) {
                 ChannelPipeline pipeline = ch.pipeline();
+                // 日志级别
+                pipeline.addLast(new LoggingHandler(LogLevel.INFO));
                 // 空闲检测
-                ch.pipeline().addLast(new ImIdleStateHandler());
+                pipeline.addLast(new ImIdleStateHandler());
                 pipeline.addLast(new Spliter());
                 pipeline.addLast(PacketCodecHandler.INSTANCE);
                 pipeline.addLast(LoginRequestHandler.INSTANCE);

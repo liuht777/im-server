@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class ImIdleStateHandler extends IdleStateHandler {
 
-    private static final int READER_IDLE_TIME = 15;
+    private static final int READER_IDLE_TIME = 90;
 
     /**
      * 如果 15 秒内没有读到数据，就表示连接假死

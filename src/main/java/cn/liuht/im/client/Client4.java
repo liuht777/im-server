@@ -9,6 +9,6 @@ package cn.liuht.im.client;
 public class Client4 {
 
     public static void main(String[] args) {
-        new NettyClient("127.0.0.1", 8084);
+        NettyClient.connect(NettyClient.MAX_RETRY);
     }
 }

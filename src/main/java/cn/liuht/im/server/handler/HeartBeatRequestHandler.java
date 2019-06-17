@@ -7,6 +7,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
+
 /**
  * 心跳请求
  *
@@ -23,7 +25,7 @@ public class HeartBeatRequestHandler extends SimpleChannelInboundHandler<HeartBe
 
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final HeartBeatRequestPacket msg) throws Exception {
-        log.debug("收到心跳["+ctx.channel().id()+"]");
+        log.debug(new Date() + ": 收到心跳["+ctx.channel().id()+"]");
         ctx.writeAndFlush(new HeartBeatResponsePacket());
     }
 }

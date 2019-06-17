@@ -61,9 +61,12 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception{
         Session session = SessionUtil.getSession(ctx.channel());
-        log.warn("[" + session.getUserName() + "]下线, 清空缓存");
-        SessionUtil.unBindSession(ctx.channel());
+        if (session != null) {
+            log.warn("[" + session.getUserName() + "]下线, 清空缓存");
+            SessionUtil.unBindSession(ctx.channel());
+        }
+        ctx.fireChannelInactive();
     }
 }
